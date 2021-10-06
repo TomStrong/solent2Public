@@ -19,6 +19,7 @@
 
     String name = request.getParameter("userName");
     String email = request.getParameter("email");
+    int userID = Integer.parseInt(request.getParameter("userID"));
 
     // find what action to perform on the page
     String action = request.getParameter("action");
@@ -31,6 +32,8 @@
         users.remove(name);
     } else if ("addUser".equals(action)) {
         users.add(newUser);
+    } else if ("editUser".equals(action)) {
+        users.get(userID);
     }
 
 %>
@@ -46,15 +49,23 @@
         <h2>user list</h2>
         
         <table>
-            <% for (User user : users) {%>
+            <% for (int idx = 0; idx < users.size(); idx++) {
+                    User user = users.get(idx);
+            %>
             <tr>
+                <td><p><%=idx + 1%></p></td>
                 <td><p><%=user.getUsername()%></p></td>
                 <td><p><%=user.getEmail()%></p></td>
                 <td>
                     <form action="./jspexample3.jsp" method="post">
-                        <input type="hidden" name="userName" value="<%=user.getUsername()%>">
+                        <input type="hidden" name="userID" value="<%=idx%>">
                         <input type="hidden" name="action" value="removeUser">
                         <button type="submit" >Remove</button>
+                    </form>
+                    <form action="./jspexample3.jsp" method="post">
+                        <input type="hidden" name="userID" value="<%=idx%>">
+                        <input type="hidden" name="action" value="editUser">
+                        <button type="submit" >Modify</button>
                     </form>
                 </td>
             </tr>
