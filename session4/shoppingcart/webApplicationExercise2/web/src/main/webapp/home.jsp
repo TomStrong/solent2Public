@@ -25,19 +25,20 @@
     String action = (String) request.getParameter("action");
     String itemName = (String) request.getParameter("itemName");
     String itemUuid = (String) request.getParameter("itemUUID");
+    Double cartTotal = (Double) shoppingCart.getTotal();
 
     if ("addItemToCart".equals(action)) {
-        message = "adding "+itemName + " to cart";
         ShoppingItem shoppingItem = shoppingService.getNewItemByName(itemName);
-        message = "adding "+itemName + " to cart : "+shoppingItem;
+        message = "adding "+itemName + " to cart price="+ shoppingItem.getPrice();
         shoppingCart.addItemToCart(shoppingItem);
-    }
-    if ("removeItemFromCart".equals(action)) {
+    } else if ("removeItemFromCart".equals(action)) {
+        itemName = shoppingCart.removeItemFromCart(itemUuid);
         message = "removing "+itemName + " from cart";
-        shoppingCart.removeItemFromCart(itemUuid);
     } else {
         message = "action="+action;
     }
+    
+    cartTotal = (Double) shoppingCart.getTotal();
 
 %>
 <!DOCTYPE html>
@@ -101,6 +102,14 @@
                 </td>
             </tr>
             <% }%>
+            <tr>
+                <td>
+                    TOTAL
+                </td>
+                <td>
+                    <%=cartTotal%>
+                </td>
+            </tr>
 
         </table>
 

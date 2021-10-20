@@ -18,7 +18,7 @@ public interface ShoppingCart {
     
     public void addItemToCart(ShoppingItem shoppingItem);
     
-    public void removeItemFromCart(String itemUuid);
+    public String removeItemFromCart(String itemUuid);
     
     public double getTotal();
     

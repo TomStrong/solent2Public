@@ -31,17 +31,31 @@ public class ShoppingCartImpl implements ShoppingCart {
 
     @Override
     public void addItemToCart(ShoppingItem shoppingItem) {
-        itemMap.put(shoppingItem.getUuid(), shoppingItem);
+        ShoppingItem item = itemMap.get(shoppingItem.getUuid());
+        if (item != null) {
+            Integer q = item.getQuantity();
+            item.setQuantity(q+1);
+        } else {
+            itemMap.put(shoppingItem.getUuid(), shoppingItem);
+        }        
     }
 
     @Override
-    public void removeItemFromCart(String itemUuid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String removeItemFromCart(String itemUuid) {
+        ShoppingItem cartItem = itemMap.get(itemUuid);
+        itemMap.remove(itemUuid);
+        return cartItem.getName();
     }
 
     @Override
     public double getTotal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Double total = 0.0;
+        List<ShoppingItem> cartContents = this.getShoppingCartItems();
+        for (ShoppingItem item : cartContents) {
+            total += item.getPrice();
+        }
+        
+        return total;
     }
 
 }
